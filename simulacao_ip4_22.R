@@ -9,7 +9,7 @@ dados[dados == ""] <- NA; dados[dados == " "] <- NA
 dados$remuneracao %<>% as.numeric
 
 
-#4. Qual é a quantidade de trabalhadores do sexo masculino com idade igual ou superior a 50 anos, registrados no estado da Bahia, no ano de 2019? *
+#4. Qual Ã© a quantidade de trabalhadores do sexo masculino com idade igual ou superior a 50 anos, registrados no estado da Bahia, no ano de 2019? *
 dados %>% subset(sexo == "M" & idade >= 50 & uf == "BA" & ano == "2019") %>% dim
 
 #R: 3184
@@ -22,23 +22,23 @@ aux[aux$Freq == max(aux$Freq), ]
 #R: ANA 2017 - SBB 2017
 
 
-#6. Sabendo-se que o nível de escolaridade de um trabalhador vai de 1 até 5, qual é o percentual de trabalhadores, registrados no estabelecimento Ipea, com escolaridade nível 4 no ano de 2015? *
+#6. Sabendo-se que o nÃ­vel de escolaridade de um trabalhador vai de 1 atÃ© 5, qual Ã© o percentual de trabalhadores, registrados no estabelecimento Ipea, com escolaridade nÃ­vel 4 no ano de 2015? *
 subset(dados, orgao == "Ipea" & ano == 2015)["escolaridade"] %>% table(useNA = "always") %>% prop.table %>% multiply_by(100) %>% round(1)
 
 #R: 40.1%
-#Obs: Fiquei um pouco confuso sobre o escopo do filtro desejado, então adotei o filtro completo (além de usar os missings).
+#Obs: Fiquei um pouco confuso sobre o escopo do filtro desejado, entÃ£o adotei o filtro completo (alÃ©m de usar os missings).
 
 
-#7. Ao analisar os números de mulheres registradas no estabelecimento UFSJ, apenas para o ano de 2010, qual raça apresenta a menor quantidade de registros? Obs: desconsiderar registros sem a raça declarada. *
+#7. Ao analisar os nÃºmeros de mulheres registradas no estabelecimento UFSJ, apenas para o ano de 2010, qual raÃ§a apresenta a menor quantidade de registros? Obs: desconsiderar registros sem a raÃ§a declarada. *
 subset(dados, orgao == "UFSJ" & ano == 2010)["raca"] %>% table
 
 #R: Amarelo = 80
 
 
-#8. Carregar um gráfico, preferencialmente nos formatos HTML, PNG, JPEG, e PDF, contendo uma série temporal de 1985 até 2019, que trate sobre a diferença de sexo e raça. Você pode explorar as variáveis que achar mais relevantes.
-dados <- dados[sample(nrow(dados), 5000), ] #Como a remuneração foi gerada utilizando uma mesma distribuição para todas as classes, os dados se mostraram extremamente homogênios, então optei por utilizar uma amostra para poder responder à questão 9.
+#8. Carregar um grÃ¡fico, preferencialmente nos formatos HTML, PNG, JPEG, e PDF, contendo uma sÃ©rie temporal de 1985 atÃ© 2019, que trate sobre a diferenÃ§a de sexo e raÃ§a. VocÃª pode explorar as variÃ¡veis que achar mais relevantes.
+dados <- dados[sample(nrow(dados), 5000), ] #Como a remuneraÃ§Ã£o foi gerada utilizando uma mesma distribuiÃ§Ã£o para todas as classes, os dados se mostraram extremamente homogÃªnios, entÃ£o optei por utilizar uma amostra para poder responder Ã  questÃ£o 9.
 
-#G1: Remuneração x Ano/Sexo
+#G1: RemuneraÃ§Ã£o x Ano/Sexo
 aux <- aggregate(list(remuneracao = dados$remuneracao), by = list(ano = dados$ano, sexo = dados$sexo), mean, na.rm = T)
 G1 <- aux %>% 
   ggplot(aes(ano, remuneracao, color = sexo)) +
@@ -54,11 +54,11 @@ G1 <- aux %>%
   ) +
   guides(color = "none") +
   coord_cartesian(xlim = c(1985, 2022)) + #, ylim = c(5000, 6000)
-  labs(title = "Remuneração x Ano / Gênero", x = "Ano", y = "Remuneração") +
+  labs(title = "RemuneraÃ§Ã£o x Ano / GÃªnero", x = "Ano", y = "RemuneraÃ§Ã£o") +
   theme(plot.title = element_text(hjust = 0.5), text = element_text(size = 10))
 
 
-#G2: Remuneração x FaixaAno/Raça
+#G2: RemuneraÃ§Ã£o x FaixaAno/RaÃ§a
 aux <- dados[c("ano", "raca", "remuneracao")]
 aux <- aggregate(list(remuneracao = dados$remuneracao), by = list(
   ano = cut(dados$ano, breaks = seq(1990, 2020, 5), include.lowest = TRUE, labels = paste0(substr(seq(1990, 2015, 5), 3, 4), "-", substr(seq(1994, 2019, 5), 3, 4))),
@@ -71,10 +71,10 @@ G2 <- aux %>%
   scale_x_discrete(limits = levels(aux$ano)) +
   theme(legend.position = "top", legend.title = element_blank(), plot.title = element_text(hjust = 0.5), text = element_text(size = 10),
         legend.text = element_text(size = 7), legend.key.size = unit(0.5, 'cm')) +
-  labs(title = "Remuneração x Intervalo Anual / Raça", x = "Intervalo Anual", y = "Remuneração")
+  labs(title = "RemuneraÃ§Ã£o x Intervalo Anual / RaÃ§a", x = "Intervalo Anual", y = "RemuneraÃ§Ã£o")
 
 
-#G3: Remuneração x Escolaridade/Sexo | 2019
+#G3: RemuneraÃ§Ã£o x Escolaridade/Sexo | 2019
 aux <- subset(dados, ano == 2019)
 aux <- aggregate(list(remuneracao = aux$remuneracao), by = list(escolaridade = aux$escolaridade, sexo = aux$sexo), mean, na.rm = T)
 G3 <- aux %>% 
@@ -91,17 +91,17 @@ G3 <- aux %>%
   ) +
   guides(color = "none") +
   coord_cartesian() + #ylim = c(4900, 6300)
-  labs(title = "Remuneração x Escolaridade / Gênero\n Ano 2019", x = "Escolaridade", y = "Remuneração") +
+  labs(title = "RemuneraÃ§Ã£o x Escolaridade / GÃªnero\n Ano 2019", x = "Escolaridade", y = "RemuneraÃ§Ã£o") +
   theme(plot.title = element_text(hjust = 0.5), text = element_text(size = 10))
 
 
-#G4: Remuneração x Raça | 2019
+#G4: RemuneraÃ§Ã£o x RaÃ§a | 2019
 aux <- aggregate(list(remuneracao = dados$remuneracao), by = list(ano = dados$ano, raca = dados$raca), mean, na.rm = T)
 aux %<>% merge(aggregate(list(remuneracaoTotal = aux$remuneracao), by = list(ano = aux$ano), sum), all.x = T, all.y = F)
 aux$G4prop <- 100 * aux$remuneracao / aux$remuneracaoTotal
 G4 <- ggplot(aux, aes(ano, G4prop, fill = raca)) +
   geom_bar(stat = "identity") +
-  labs(title = "Distribuição da Remuneração x Ano / Raça", x = "Ano", y = "Remuneração") +
+  labs(title = "DistribuiÃ§Ã£o da RemuneraÃ§Ã£o x Ano / RaÃ§a", x = "Ano", y = "RemuneraÃ§Ã£o") +
   theme(legend.position = "top", legend.title = element_blank(), plot.title = element_text(hjust = 0.5), text = element_text(size = 10),
         legend.text = element_text(size = 7), legend.key.size = unit(0.5, 'cm'))
 
