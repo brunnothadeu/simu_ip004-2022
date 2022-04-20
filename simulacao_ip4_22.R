@@ -3,7 +3,7 @@ library(dplyr)
 library(ggplot2)
 library(multipanelfigure)
 
-dados <- read.csv2("C:\\Users\\Documentos\\Documents\\Estudos\\simulacao_ipea.csv")
+dados <- read.csv2("C:\\Users\\Documentos\\Documents\\Estudos\\simulacao_ip.csv")
 
 dados[dados == ""] <- NA; dados[dados == " "] <- NA
 dados$remuneracao %<>% as.numeric
